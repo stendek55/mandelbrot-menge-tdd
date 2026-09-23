@@ -7,6 +7,15 @@ pub struct Complex {
     pub imag: f64,
 }
 
+pub struct Grenzen {
+    breite: usize,
+    hoehe: usize,
+    min_real: f64,
+    max_real: f64,
+    min_imag: f64,
+    max_imag: f64,
+}
+
 //#################################################################
 //###################-----eigeneMETHODEN-----######################
 //#################################################################
@@ -29,6 +38,12 @@ impl Complex {
         let real_neu = (self.real * self.real) - (self.imag * self.imag);
         let imag_neu = 2f64 * (self.real * self.imag);
         Complex::neu(real_neu, imag_neu)
+    }
+}
+
+impl Grenzen {
+    pub fn pixel_in_complex(&self, _x: usize, _y: usize) -> Complex {
+        unimplemented!()
     }
 }
 
@@ -113,6 +128,43 @@ mod tests {
             ergebnis,
             Complex::neu(5.0, -12.0),
             "QUADRIEREN einer negativen complexenZahl nich5t korrekt errechnet"
+        );
+    }
+
+    //#########-----KOORDINATENumrechnung (PIXEL -> KOMPLEX)-----#################
+    #[test]
+    fn test_wandle_complexe_ebene_in_pixel_bereich() {
+        //X-Achse für den Realteil
+        //Y-Achse für den Imaginärteil
+        let grenzen = Grenzen {
+            breite: 100,
+            hoehe: 100,
+            min_real: -2.0,
+            max_real: 2.0,
+            min_imag: -1.0,
+            max_imag: 1.0,
+        };
+
+        // Obere linke Ecke (Pixel 0,0) muss exakt den minimalen Werten entsprechen
+        let oben_links = grenzen.pixel_in_complex(0, 0);
+        assert_eq!(
+            oben_links.real, -2.0,
+            "komplexer wert nicht korrekt auf pixelbereich gelegt - oben links - Xreal"
+        );
+        assert_eq!(
+            oben_links.imag, -1.0,
+            "komplexer wert nicht korrekt auf pixelbereich gelegt - oben links - Yimaginär"
+        );
+
+        // Untere rechte Ecke (Pixel 100,100) muss den maximalen Werten entsprechen
+        let unten_rechts = grenzen.pixel_in_complex(100, 100);
+        assert_eq!(
+            unten_rechts.real, 2.0,
+            "komplexer wert nicht korrekt auf pixelbereich gelegt - unten rechts - Xreal"
+        );
+        assert_eq!(
+            unten_rechts.imag, 1.0,
+            "komplexer wert nicht korrekt auf pixelbereich gelegt - unten rechts - Yimaginär"
         );
     }
 }
