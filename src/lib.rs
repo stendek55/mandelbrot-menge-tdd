@@ -15,16 +15,20 @@ impl Complex {
         Complex { real, imag }
     }
 
+    // kurze hinweise zur verwendeten mathematik im testbereich
+
     pub fn quadrierte_norm(&self) -> f64 {
-        unimplemented!()
+        (self.real * self.real) + (self.imag * self.imag)
     }
 
-    pub fn addition(&self, _andere: &Complex) -> Complex {
-        unimplemented!()
+    pub fn addition(&self, andere: &Complex) -> Complex {
+        Complex::neu(self.real + andere.real, self.imag + andere.imag)
     }
 
     pub fn quadrieren(&self) -> Complex {
-        unimplemented!()
+        let real_neu = (self.real * self.real) - (self.imag * self.imag);
+        let imag_neu = 2f64 * (self.real * self.imag);
+        Complex::neu(real_neu, imag_neu)
     }
 }
 
@@ -72,7 +76,7 @@ mod tests {
         let ergebnis = cpx_1.addition(&cpx_2);
         assert_eq!(
             ergebnis,
-            Complex::neu(3.5, 1.5),
+            Complex::neu(4.5, 6.5),
             "ADDITION complexerZahl nicht korrekt errechnet"
         );
         //negative werte testen
