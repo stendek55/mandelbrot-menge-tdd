@@ -1,6 +1,7 @@
 //#################################################################
 //#################-----eigeneSTRUKTUREN-----######################
 //#################################################################
+#[derive(Debug)]
 pub struct Complex {
     pub real: f64,
     pub imag: f64,
@@ -10,8 +11,8 @@ pub struct Complex {
 //###################-----eigeneMETHODEN-----######################
 //#################################################################
 impl Complex {
-    pub fn neu(real_teil: f64, imaginaer_teil: f64) -> Self {
-        unimplemented!()
+    pub fn neu(real: f64, imag: f64) -> Self {
+        Complex { real, imag }
     }
 }
 
