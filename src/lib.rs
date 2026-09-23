@@ -42,8 +42,14 @@ impl Complex {
 }
 
 impl Grenzen {
-    pub fn pixel_in_complex(&self, _x: usize, _y: usize) -> Complex {
-        unimplemented!()
+    pub fn pixel_in_complex(&self, x: usize, y: usize) -> Complex {
+        // lineare skalierung für realteil - Xachse
+        let real =
+            self.min_real + (x as f64 / self.breite as f64) * (self.max_real - self.min_real);
+
+        // lineare skalierung für imaginärteil - Yachse
+        let imag = self.min_imag + (y as f64 / self.hoehe as f64) * (self.max_imag - self.min_imag);
+        Complex::neu(real, imag)
     }
 }
 
