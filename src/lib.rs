@@ -56,8 +56,47 @@ impl Grenzen {
 //####################################################################
 //####################-----eigeneFUNKTIONEN-----######################
 //####################################################################
-pub fn ausbruch_zeit(_cmplx: &Complex, _max_iterationen: usize) -> Option<usize> {
-    unimplemented!()
+/// Berechnet, wie lange eine komplexe Zahl benötigt, um gegen Unendlich zu entweichen.
+/// Die Mandelbrot-Menge ist die Menge aller komplexen Zahlen c, für die die Folge
+/// z_{n+1} = z_n² + c (mit dem Startwert z_0 = 0) beschränkt bleibt. Das bedeutet,
+/// der Wert von z darf nicht ins Unendliche wachsen, sondern muss "gefangen" bleiben.
+pub fn ausbruch_zeit(cpx_c: &Complex, max_iterationen: usize) -> Option<usize> {
+    // Jede komplexe Zahl startet bei der Berechnung im Ursprung: z_0 = 0 + 0i.
+    // Das ist der mathematische Ankerpunkt für die gesamte Fraktal-Berechnung.
+    //startpunkt
+    let mut cmplx_z = Complex::neu(0.0, 0.0);
+
+    // Jeder Durchlauf repräsentiert den Schritt von z_n zu z_{n+1}.
+    //durchgänge
+    for i in 0..max_iterationen {
+        // DIE FORMEL: z_{n+1} = z_n² + c
+        // Hier passiert das mathematische "Chaos" und die Rückkopplung:
+        // 1. z.square(): Wir nehmen das aktuelle z und quadrieren es.
+        //    (Mathematisch: (re + im*i)² = re² - im² + 2*re*im*i)
+        // 2. .add(&c): Wir addieren die feste Koordinate c (den Punkt, den wir gerade prüfen).
+        // Das Ergebnis wird das neue z für den nächsten Schleifendurchlauf.
+        //formel anwenden -> z_{n+1} = z_n² + c
+        cmplx_z = cmplx_z.quadrieren().addition(cpx_c);
+
+        // MATHEMATISCHER HINTERGRUND DES ESCAPES (Flucht-Bedingung):
+        // Es ist mathematisch bewiesen: Sobald der Abstand (die Norm) einer Zahl z
+        // zum Nullpunkt größer als 2 wird, bricht die Folge unaufhaltsam gegen Unendlich aus.
+        // Um die langsame und rechenintensive Quadratwurzel (für den echten Abstand) zu vermeiden,
+        // nutzen wir das Betragsquadrat.
+        //escape-bedingung prüfen
+        if cmplx_z.quadrierte_norm() > 4.0 {
+            // Der Punkt ist "entwichen" (escaped).
+            // Wir geben Some(i) zurück. Die Zahl i sagt uns, *wie schnell* (in welchem Schritt)
+            // der Punkt ausgebrochen ist. Das wird später genutzt, um das Fraktal bunt einzufärben!
+            return Some(i);
+        }
+    }
+    // DIE BEDEUTUNG VON None:
+    // Wenn z selbst nach z. B. 150 Durchläufen immer noch einen Abstand kleiner oder gleich 2 hat,
+    // gehen wir davon aus, dass diese Folge stabil ist und niemals gegen Unendlich entweichen wird.
+    // Das bedeutet: Dieser Punkt c GEHÖRT ZUR MANDELBROT-MENGE.
+    // In Grafiken ist das der berühmte "schwarze Kern" (Apfelmännchen).
+    None
 }
 
 //#################################################################
