@@ -8,12 +8,12 @@ pub struct Complex {
 }
 
 pub struct Grenzen {
-    breite: usize,
-    hoehe: usize,
-    min_real: f64,
-    max_real: f64,
-    min_imag: f64,
-    max_imag: f64,
+    pub breite: usize,
+    pub hoehe: usize,
+    pub min_real: f64,
+    pub max_real: f64,
+    pub min_imag: f64,
+    pub max_imag: f64,
 }
 
 //#################################################################
