@@ -53,11 +53,19 @@ impl Grenzen {
     }
 }
 
+//####################################################################
+//####################-----eigeneFUNKTIONEN-----######################
+//####################################################################
+pub fn ausbruch_zeit(_cmplx: &Complex, _max_iterationen: usize) -> Option<usize> {
+    unimplemented!()
+}
+
 //#################################################################
 //####################-----TDDbereich-----#########################
 //#################################################################
 #[cfg(test)]
 mod tests {
+
     use super::*;
 
     //##############-----komplexeARITHMETIK-----#######################
@@ -189,5 +197,56 @@ mod tests {
         let zentrum = grenzen.pixel_in_complex(100, 100);
         assert!(zentrum.real == 0.0);
         assert!(zentrum.imag == 0.0);
+    }
+
+    //####################-----MANDELBROTkernlogik -> escapeZEIT-----############################
+    #[test]
+    fn test_escape_zeit_von_nullpunkt_in_menge() {
+        //der nullpunkt (0,0) gehört garantiert zur mandelbrot-menge
+        // |--> darf niemals ausbrechen
+        let cmplx_innen = Complex::neu(0.0, 0.0);
+        assert_eq!(
+            ausbruch_zeit(&cmplx_innen, 155),
+            None,
+            "der nullpunkt ist nicht stabil geblieben und hat kein None geliefert"
+        );
+    }
+
+    #[test]
+    fn test_escape_zeit_sofort_entweichen_von_wert_ausserhalb_der_menge() {
+        //der punkt (3,3) ist weit ausserhalb der mandelbrot-menge
+        // |-> muss sofort ausbrechen
+        let cmplx_aussen = Complex::neu(3.0, 3.0);
+        let ergebnis_ausbruch = ausbruch_zeit(&cmplx_aussen, 10);
+        assert!(ergebnis_ausbruch.is_some(), "punkt (3,3) muss entweichen");
+        assert_eq!(
+            ergebnis_ausbruch,
+            Some(0),
+            "muss sofort ausbrechen bei iteration 0 -> denn startwert > 2"
+        );
+    }
+
+    #[test]
+    fn test_escape_zeit_langsam_entweichen_von_wert_knapp_ausserhalb_der_menge() {
+        //der punkt (1,0) ist am rand ausserhalb der mandelbrot-menge
+        // |-> muss nach wenigen schritten ausbrechen
+        let cmplx_aussen = Complex::neu(1.0, 0.0);
+        let ergebnis_ausbruch = ausbruch_zeit(&cmplx_aussen, 10);
+        assert!(
+            ergebnis_ausbruch.unwrap() < 4,
+            "muss langsam ausbrechen bei iteration kleiner 4"
+        );
+    }
+
+    #[test]
+    fn test_escape_zeit_nicht_entweichen_da_wert_knapp_innerhal_menge() {
+        //der punkt (-1,0) ist am rand innerhalb der mandelbrot-menge
+        // |-> oszilliert stabil -> darf nicht entweichen
+        let cmplx_innen = Complex::neu(-1.0, 0.0);
+        assert_eq!(
+            ausbruch_zeit(&cmplx_innen, 155),
+            None,
+            "der punkt (-1,0) bleibt nicht stabil in menge"
+        );
     }
 }
