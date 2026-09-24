@@ -76,7 +76,11 @@ pub fn ausbruch_zeit(cpx_c: &Complex, max_iterationen: usize) -> Option<usize> {
         // 2. .add(&c): Wir addieren die feste Koordinate c (den Punkt, den wir gerade prüfen).
         // Das Ergebnis wird das neue z für den nächsten Schleifendurchlauf.
         //formel anwenden -> z_{n+1} = z_n² + c
-        cmplx_z = cmplx_z.quadrieren().addition(cpx_c);
+        cmplx_z = cmplx_z.quadrieren().addition(cpx_c); //-> parameter ohne &
+        // hinweis zur parameterübergabe an .addition()
+        // |-> es erwartet einen zeiger auf Complex
+        // da in diese funktion der parameter schon als zeiger ankommt
+        // wird er hier ohne das & weitergegeben
 
         // MATHEMATISCHER HINTERGRUND DES ESCAPES (Flucht-Bedingung):
         // Es ist mathematisch bewiesen: Sobald der Abstand (die Norm) einer Zahl z
