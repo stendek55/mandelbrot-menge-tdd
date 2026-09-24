@@ -173,4 +173,21 @@ mod tests {
             "komplexer wert nicht korrekt auf pixelbereich gelegt - unten rechts - Yimaginär"
         );
     }
+
+    #[test]
+    fn test_lege_pixel_in_zentrum_complexer_ebene() {
+        let grenzen = Grenzen {
+            breite: 200,
+            hoehe: 200,
+            min_real: -2.0,
+            max_real: 2.0,
+            min_imag: -2.0,
+            max_imag: 2.0,
+        };
+
+        // die exakte mitte muss bei diesem symetrischen grid (0.0, 0.0) sein!
+        let zentrum = grenzen.pixel_in_complex(100, 100);
+        assert!(zentrum.real == 0.0);
+        assert!(zentrum.imag == 0.0);
+    }
 }
