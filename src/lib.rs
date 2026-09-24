@@ -103,8 +103,25 @@ pub fn ausbruch_zeit(cpx_c: &Complex, max_iterationen: usize) -> Option<usize> {
     None
 }
 
-pub fn render_mandelbrot(_grenzen: &Grenzen, _max_iterationen: usize) -> Vec<usize> {
-    unimplemented!()
+pub fn render_mandelbrot(grenzen: &Grenzen, max_iterationen: usize) -> Vec<usize> {
+    let mut bilddaten = Vec::new();
+
+    //gehe über breite
+    for y in 0..grenzen.hoehe {
+        //gehe über höhe
+        for x in 0..grenzen.breite {
+            //berechnet die komplexe koordinate für das aktuelle pixel
+            let cmplx = grenzen.pixel_in_complex(x, y);
+
+            //ermittelt die ausbruchszeit
+            let ausbruch = match ausbruch_zeit(&cmplx, max_iterationen) {
+                Some(i) => i,
+                None => max_iterationen,
+            };
+            bilddaten.push(ausbruch);
+        }
+    }
+    bilddaten
 }
 //#################################################################
 //####################-----TDDbereich-----#########################
