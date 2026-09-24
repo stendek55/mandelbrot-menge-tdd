@@ -103,6 +103,9 @@ pub fn ausbruch_zeit(cpx_c: &Complex, max_iterationen: usize) -> Option<usize> {
     None
 }
 
+pub fn render_mandelbrot(_grenzen: &Grenzen, _max_iterationen: usize) -> Vec<usize> {
+    unimplemented!()
+}
 //#################################################################
 //####################-----TDDbereich-----#########################
 //#################################################################
@@ -290,6 +293,27 @@ mod tests {
             ausbruch_zeit(&cmplx_innen, 155),
             None,
             "der punkt (-1,0) bleibt nicht stabil in menge"
+        );
+    }
+
+    //#################-----RENDERER-----#################################################
+    #[test]
+    fn test_hat_vector_korrekte_groesse_beim_rendern() {
+        let grenzen = Grenzen {
+            breite: 11,
+            hoehe: 5,
+            min_real: -2.0,
+            max_real: 1.0,
+            min_imag: -1.0,
+            max_imag: 1.0,
+        };
+
+        // der gerenderte vector muss breite * hoehe elemnte haben
+        let grid = render_mandelbrot(&grenzen, 10);
+        assert_eq!(
+            grid.len(),
+            grenzen.breite * grenzen.hoehe,
+            "der vector hat falsche anzahl an elementen"
         );
     }
 }
