@@ -54,13 +54,17 @@ Das Vorschaltmenü erlaubt den direkten Sprung in mathematisch koordinierte Auss
 Voraussetzung ist eine installierte Rust-Toolchain.
 
 1. Repository klonen oder in das Projektverzeichnis wechseln:
+   ```bash
    cd mandelbrot-menge-tdd
-
+   ```
 2. Die TDD-Testsuite ausführen, um die Integrität des mathematischen Kerns zu überprüfen:
+   ```bash
    cargo test
-
+   ```
 3. Die interaktive Anwendung starten:
+   ```bash
    cargo run
+   ```
 
 ## Bedienung
 
