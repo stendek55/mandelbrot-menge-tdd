@@ -106,9 +106,9 @@ pub fn ausbruch_zeit(cpx_c: &Complex, max_iterationen: usize) -> Option<usize> {
 pub fn render_mandelbrot(grenzen: &Grenzen, max_iterationen: usize) -> Vec<usize> {
     let mut bilddaten = Vec::new();
 
-    //gehe über breite
+    //gehe über höhe
     for y in 0..grenzen.hoehe {
-        //gehe über höhe
+        //gehe über breite
         for x in 0..grenzen.breite {
             //berechnet die komplexe koordinate für das aktuelle pixel
             let cmplx = grenzen.pixel_in_complex(x, y);
